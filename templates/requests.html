@@ -1,0 +1,203 @@
+<!-- templates/requests.html -->
+{% extends 'base.html' %}
+
+{% block title %}Requests Page{% endblock %}
+
+
+{% block content %}
+<style>
+    table, th, td {
+        border: 1px solid black;
+        background-color: #F7EACA;
+        margin-top: 5.5%;
+        width: 99vw
+    }
+    th {
+        background-color: #B58463;
+    }
+    #header {
+        width: 99vw;
+        height: 5vw;
+        background-color: #9B9B7A;
+        border: 1px solid black;
+    }
+    /* Set a style for all buttons */
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+/* Float cancel and delete buttons and add an equal width */
+.cancelbtn, .deletebtn {
+  float: left;
+  width: 50%;
+}
+
+/* Add a color to the cancel button */
+.cancelbtn {
+  background-color: #ccc;
+  color: black;
+}
+
+/* Add a color to the delete button */
+.deletebtn {
+  background-color: #f44336;
+}
+
+/* Add padding and center-align text to the container */
+.container {
+  padding: 1px;
+  text-align: center;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #474e5d;
+  padding-top: 1px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Style the horizontal ruler */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* The Modal Close Button (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and delete button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn, .deletebtn {
+    width: 100%;
+  }
+}
+
+.one_line {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+</style>
+
+<nav id = "header" />
+
+
+<table>
+
+    <tr>
+        <th>No.</th>
+        <th>Date Requested</th>
+        <th>User_id</th>
+        <th>Goal_id</th>
+        <th>Task_id</th>
+        <th>Requested Reward</th>
+        <th>Open Request</th>
+    </tr>
+    <tr>
+        {% for request in request_list %}
+            <td>{{request.no_field}}</td>
+            <td>{{request.date_requested}}</td>
+            <td>{{request.user_id}}</td>
+            <td>{{request.goal_id}}</td>
+            <td>{{request.task_id}}</td>
+            <td>{{request.requested_reward}}</td>
+            <td><button onclick = "document.getElementById('id01').style.display='block'">view</button></td>
+            <div id="id01" class="modal">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                <form class="modal-content" action="/action_page.php">
+                  <div class="container">
+                    <h1>Summary</h1>
+                    <div class="one_line">
+                        <h2>Goal:</h2>
+                        <h3>{{request.goal_desc}}</h3>
+                    </div>
+                    <div class="one_line">
+                        <h2>Task:</h2>
+                        <h3>{{request.task_desc}}</h3>
+                    </div>
+                    <div class="one_line">
+                        <h2>Requester:</h2>
+                        <h3>{{request.user_name}}</h3>
+                    </div>
+                    <div class="one_line">
+                        <h2>Assigned Reward:</h2>
+                        <h3>{{request.assigned_reward}}</h3>
+                    </div>
+                    <div class="one_line">
+                        <h2>Desired Reward:</h2>
+                        <h3>{{request.requested_reward}}</h3>
+                    </div>
+                    <div class="one_line">
+                        <h2>Reason:</h2>
+                        <h3>{{request.reason}}</h3>
+                    </div>
+              
+                    <div class="clearfix">
+                      <button onclick = "window.location.href='/accept/{{request.no_field}}/';" type="button" class="cancelbtn">Accept</button>
+                      <button onclick = "window.location.href ='/delete/{{request.no_field}}/';" type="button" class="deletebtn">Delete</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+          
+    </tr>
+    {% endfor %}
+</table>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('id01');
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    </script>
+{% endblock %}

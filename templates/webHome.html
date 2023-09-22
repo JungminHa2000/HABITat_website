@@ -1,0 +1,105 @@
+<!-- templates/webHome.html -->
+{% extends 'base.html' %}
+
+{% block title %}HABITat Admin Home{% endblock %}
+
+{% block content %}
+<style>
+    .center {
+        text-align: center;
+        width: 300px;
+        height: 100px;
+        transform: translate(41vw, 30vh);
+        border: 6px solid;
+        background-color: #BAA587;
+        border-color: #BAA587;
+    }
+
+    img {
+        transform: translate(92vw, 70vh);
+        width: 130px;
+        height: 90px;
+    }
+        
+    #sidebar {
+        width: 200px;
+        height: 500px;
+        float: left;
+        background-color: #9B9B7A;
+        border: 1px solid black;
+    }
+
+    .button {
+        border: none;
+        color: white;
+        padding: 20px 45px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .button1 {
+        background-color: #797D62;
+        border: 1px solid black;
+    }
+
+    .button2 {
+        border: none;
+        color: white;
+        padding: 21px 53px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 20px;
+        cursor: pointer;
+        border: 1px solid black;
+    }
+
+    .button3 {
+        border: none;
+        color: white;
+        padding: 10px 30px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 15px;
+        cursor: pointer;
+        border: 1px solid black;
+        position: absolute;
+        right: 1%;
+        top: 3%;
+    }
+    body {
+        font-family: Arial, sans-serif;
+   }
+</style>
+
+<body>
+
+<h1 style = 'text-align: center;'>Home Page</h1>
+<nav id = "sidebar" />
+
+
+<div class = "center">
+    <h2>Welcome back, HABITat Administrator!</strong>
+</div>
+<img src = 'https://lh3.googleusercontent.com/pw/AIL4fc_jYkphueYY4dlHi4SS1S98EFpe-e9jUOq0wycPiroSZMH-k3aaryF46w4YU2JyCYfrELhqyhR3F1s3jnOSb332cofzGGrpqqZY39YaLE7Chzp7W7I=w2400' alt = 'HABITat Logo' />
+
+<a href= '/requests/'>
+    <button class="button button1" style = 'transform: translate(7%, -300%);'>Requests</button>
+</a>
+
+
+<a href= '/reports/'>
+    <button class="button2 button1" style = 'transform: translate(7%, -250%);'>Reports</button>
+</a>
+
+<a href= '/admin/logout/'>
+    <button class="button3 button1">Logout</button>
+</a>
+</body>
+
+
+{% endblock %}

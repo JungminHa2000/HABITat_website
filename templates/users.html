@@ -1,0 +1,21 @@
+<!-- templates/users.html -->
+{% extends 'base.html' %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+
+<table>
+    <tr>
+        <th>User_id</th>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Email</th>
+    </tr>
+    <tr>
+        {% for req in request_list %}
+        <td></td>
+    </tr>
+</table>
+
+{% endblock %}
