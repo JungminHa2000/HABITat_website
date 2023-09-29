@@ -145,11 +145,12 @@ class GoalInfo(models.Model):
 
 
 class Goals(models.Model):
-    user_id = models.PositiveBigIntegerField()
-    goal = models.ForeignKey(GoalInfo, models.DO_NOTHING)
-
+    user_id = models.BigIntegerField()
+    goal_id = models.BigIntegerField()
+    
     class Meta:
         db_table = 'goals'
+        unique_together = (('user_id', 'goal_id'),)
 
 
 class Reminders(models.Model):
@@ -164,7 +165,9 @@ class Reminders(models.Model):
 class Report(models.Model):
     no_field = models.BigAutoField(db_column='No.', primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it ended with '_'.
     reportee_id = models.BigIntegerField()
+    reportee_username = models.CharField(max_length=255, blank=True, null=True)
     reporter_id = models.PositiveBigIntegerField()
+    reporter_username = models.CharField(max_length=255, blank=True, null=True)
     reason = models.CharField(max_length=255)
 
     class Meta:

@@ -29,5 +29,6 @@ urlpatterns = [
     path('delete/<int:req_id>/', views.decline_request, name='delete'),
     path('accept/<int:req_id>/', views.accept_request, name='accept'),
     path('delete_rep/<int:rep_id>/', views.decline_report, name='delete_rep'),
+    path('accept_rep/<int:rid>/', views.accept_report, name ='accept_rep'),
     path('show_all_users/', views.show_all_users, name='show_all_users'),
 ]

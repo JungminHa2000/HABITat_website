@@ -23,14 +23,34 @@
         border: 1px solid black;
     }
     .button {
-        border: none;
-        color: white;
-        padding: 15px 45px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 15px;
-        cursor: pointer;
+      background-color: #04AA6D;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      opacity: 0.9;
+    }
+    .button2 {
+      background-color: red;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      opacity: 0.9;
+    }
+    .button4 {
+      border: none;
+      color: white;
+      padding: 15px 45px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      cursor: pointer;
     }
     .button1 {
         position: absolute;
@@ -42,137 +62,36 @@
 
     {box-sizing: border-box;}
 
-/* Button used to open the contact form - fixed at the bottom of the page */
-.open-button {
-  background-color: #555;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  bottom: 23px;
-  right: 28px;
-  width: 280px;
-}
-
-/* The popup form - hidden by default */
-.form-popup {
-  display: none;
-  position: absolute;
-  top: 8vh;
-  left: 33vw;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
-  background-color: #baa587;
-  border: 1px solid black;
-}
-
-/* Add styles to the form container */
-.form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: #baa587;
-}
-
-/* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-}
-
-/* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom:10px;
-  opacity: 0.8;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
-}
-
-.one_line {
-    display: flex;
-    justify-content: space-evenly;
-}
-
 </style>
 
 <nav id = "header" />
 <table>
     <tr>
         <th>No.</th>
-        <th>Reportee_id</th>
-        <th>Reporter_id</th>
+        <th>Reportee Username</th>
+        <th>Reporter Username</th>
         <th>Reason</th>
-        <th>Open Report</th>
+        <th>Admin Response</th>
     </tr>
     <tr>
         {% for report in report_list %}
             <td>{{report.no_field}}</td>
-            <td>{{report.reportee_id}}</td>
-            <td>{{report.reporter_id}}</td>
+            <td>{{report.reportee_username}}</td>
+            <td>{{report.reporter_username}}</td>
             <td>{{report.reason}}</td>
-            <td><button onclick = "openForm()"; style = "margin-left: 8vw;">view</button></td>
-
-            <!-- The form -->
-            <div class="form-popup" id="myForm">
-                <form class="form-container">
-                <h1 style = "text-align: center;">Review</h1>
-
-                <div class="one_line">
-                    <h2>Reportee:</h2>
-                    <h3>{{report.reportee_id}}</h3>
-                </div>
-                <div class="one_line">
-                    <h2>Reporter:</h2>
-                    <h3>{{report.reporter_id}}</h3>
-                </div>
-                <div class="one_line">
-                    <h2>Reason:</h2>
-                    <h3>{{report.reason}}</h3>
-                </div>
-
-                <a href="/accept/{{report.no_field}}/" class="btn" onclick="closeForm()">Accept</button>
-                <a href="/delete_rep/{{report.no_field}}/" class="btn cancel" onclick="closeForm()">Decline</button>
-                </form>
-            </div>
+            <td><a href = '/accept_rep/{{report.reportee_id}}/'>
+              <button class = "button">Accept</button>
+            </a>
+            <a href = '/delete_rep/{{report.no_field}}/'>
+              <button class ="button2">Reject</button>
+            </a>
+          </td>
     </tr>
     {% endfor %}
 </table>
 
 <a href= '/homepage'>
-    <button class="button button1">Back</button>
+    <button class="button1 button4">Back</button>
 </a>
-<script>
-    function openForm() {
-      document.getElementById("myForm").style.display = "block";
-    }
-    
-    function closeForm() {
-      document.getElementById("myForm").style.display = "none";
-    }
-    </script>
 
 {% endblock %}
