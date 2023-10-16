@@ -20,10 +20,9 @@ from . import views
 
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('homepage/', TemplateView.as_view(template_name='webHome.html'), name='homepage'),
+    path('', TemplateView.as_view(template_name='webHome.html'), name='homepage'),
     path('reports/', views.all_reports, name='all_reports'),
     path('requests/', views.all_requests, name='all_requests'),
     path('delete/<int:req_id>/', views.decline_request, name='delete'),
