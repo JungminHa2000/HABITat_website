@@ -203,6 +203,7 @@ class Tasks(models.Model):
 class UserData(models.Model):
     user_id = models.BigAutoField(primary_key=True)
     user_name = models.CharField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True, null=True)
     email = models.CharField(unique=True, max_length=255)
     friends_info = models.TextField(blank=True, null=True)
     password = models.TextField()

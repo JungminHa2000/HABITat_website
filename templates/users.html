@@ -13,9 +13,13 @@
         <th>Email</th>
     </tr>
     <tr>
-        {% for req in request_list %}
-        <td></td>
+        {% for user in all_user_list %}
+        <td>{{user.user_id}}</td>
+        <td>{{user.user_name}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.email}}</td>
     </tr>
+    {% endfor %}
 </table>
 
 {% endblock %}

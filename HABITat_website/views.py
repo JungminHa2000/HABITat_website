@@ -60,7 +60,6 @@ def accept_report(request, rid):
         
     goal_id_list.delete()
     return HttpResponseRedirect(reverse('all_reports'))
-    
 
 def show_all_users(request):
     all_user_list = UserData.objects.all()
