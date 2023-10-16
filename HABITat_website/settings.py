@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'HABITat_website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
+        'ENGINE': 'django.db.backends.mysql',
         'HOST': 'habitatserver.mysql.database.azure.com',
         'NAME': 'habitatdatabase',
         'USER': 'HABITat_admin_user',
