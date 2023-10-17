@@ -17,11 +17,11 @@ img {
 
 <form method="post" action="{% url 'login' %}" style ='text-align: center;'>
   {% csrf_token %}
-
+  {{ form.as_p }}
   <tr>
     <td>{{ form.username.label_tag }}</td>
     <td>{{ form.username }}</td>
- 
+  
 
   
     <td>{{ form.password.label_tag }}</td>
@@ -32,5 +32,5 @@ img {
     <input type="submit" value="login" />
     <input type="hidden" name="next" value="{{ next }}" />
   
-  </form>
+</form>
 {% endblock %}
