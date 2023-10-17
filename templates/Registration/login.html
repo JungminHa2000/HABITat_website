@@ -15,10 +15,10 @@ img {
 <img src = 'https://lh3.googleusercontent.com/pw/AIL4fc_jYkphueYY4dlHi4SS1S98EFpe-e9jUOq0wycPiroSZMH-k3aaryF46w4YU2JyCYfrELhqyhR3F1s3jnOSb332cofzGGrpqqZY39YaLE7Chzp7W7I=w2400' alt = 'HABITat Logo' height = '270' width = '400' />
 <h2 style = 'text-align: center;'>HABITat Admin Website</h2>
 
-<form method="post" action="{% url 'login' %}">
+<form method="post" action="{% url 'login' %}" style ='text-align: center;'>
   {% csrf_token %}
 
- 
+  <tr>
     <td>{{ form.username.label_tag }}</td>
     <td>{{ form.username }}</td>
  
@@ -27,7 +27,7 @@ img {
     <td>{{ form.password.label_tag }}</td>
     <td>{{ form.password }}</td>
   
-  
+  </tr>
   
     <input type="submit" value="login" />
     <input type="hidden" name="next" value="{{ next }}" />
