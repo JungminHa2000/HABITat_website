@@ -20,8 +20,26 @@
         background-color: #9B9B7A;
         border: 1px solid black;
     }
+    .button4 {
+        border: none;
+        color: white;
+        padding: 15px 45px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 15px;
+        cursor: pointer;
+    }
+    .button5 {
+        position: absolute;
+        background-color: #797D62;
+        border: 1px solid black;
+        top: 3%;
+        left: 2%;
+    }
 </style>
 
+<nav id = "header" />
 <table>
     <tr>
         <th>User_id</th>
@@ -38,5 +56,7 @@
     </tr>
     {% endfor %}
 </table>
-
+<a href= '/homepage'>
+    <button class="button4 button5">Back</button>
+  </a>
 {% endblock %}
