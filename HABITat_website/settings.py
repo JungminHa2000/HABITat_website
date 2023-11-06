@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'HABITat_website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'sql3.freemysqlhosting.net',
-        'NAME': 'sql3659372',
-        'USER': 'sql3659372',
-        'PASSWORD': 'vw89Pnh9Fj',
-        'PORT': '3306'
+        'HOST': 'mysql-habitat-habitatwebsite.a.aivencloud.com',
+        'NAME': 'defaultdb',
+        'USER': 'avnadmin',
+        'PASSWORD': 'AVNS_8f1eEnEXkdlLZbP2DbR',
+        'PORT': '16495'
     }
 }
 
