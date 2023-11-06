@@ -23,7 +23,7 @@ app_name = 'HABITat_website'
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
+    path('login/', views.login_view, name='login'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('homepage/', TemplateView.as_view(template_name='webHome.html'), name='homepage'),
