@@ -84,10 +84,10 @@ WSGI_APPLICATION = 'HABITat_website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'maria.eng.utah.edu',
-        'NAME': 'HABITat',
-        'USER': 'u1232909',
-        'PASSWORD': 'cs4000capstone2023@',
+        'HOST': 'sql3.freemysqlhosting.net',
+        'NAME': 'sql3659372',
+        'USER': 'sql3659372',
+        'PASSWORD': 'vw89Pnh9Fj',
         'PORT': '3306'
     }
 }
