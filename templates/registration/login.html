@@ -17,12 +17,7 @@ img {
 
 <form method="post" style= "text-align: center;">
   {% csrf_token %}
-  <label for="{{ form.username.id_for_label }}">Username:</label>
-  {{ form.username }}
-  <br>
-  <label for="{{ form.password.id_for_label }}">Password:</label>
-  {{ form.password }}
-  <br>
+  {{ form.as_p }}
   <button type="submit" style = 'text-align: center;'>Log In</button>
 </form>
 {% endblock %}
