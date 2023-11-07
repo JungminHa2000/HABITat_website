@@ -1,9 +1,11 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Requests
 from .models import Report
 from .models import Tasks, UserData, Goals, GoalInfo
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout
 
 def all_requests(request):
     request_list = Requests.objects.all()
@@ -64,3 +66,18 @@ def accept_report(request, rid):
 def show_all_users(request):
     all_user_list = UserData.objects.all()
     return render(request, 'users.html', {'all_user_list':all_user_list})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect('home')  # Replace 'home' with your desired redirect URL
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'registration/login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')  # Replace 'home' with your desired redirect URL
