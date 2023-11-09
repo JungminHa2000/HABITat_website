@@ -1,11 +1,11 @@
+import json
+from django.utils.html import json_script
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, redirect
-from .models import Requests
-from .models import Report
-from .models import Tasks, UserData, Goals, GoalInfo
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
+from .models import *
 
 def all_requests(request):
     request_list = Requests.objects.all()
@@ -36,6 +36,7 @@ def decline_report(request, rep_id):
 
 def accept_report(request, rid):
     delete_user = UserData.objects.get(user_id = rid)
+    num_of_reports = UserData.objects.get()
     delete_user.delete()
     delete_reports = Report.objects.get(reportee_id = rid)
     delete_reports.delete()
@@ -81,3 +82,9 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')  # Replace 'home' with your desired redirect URL
+
+def visualisation(request):
+    goals = GoalInfo.objects.all()
+    goals_data = [{'goal_id': goal.goal_id, 'money_in_bank': goal.bank} for goal in goals]
+    goals_json_script = json.dumps(goals_data)
+    return render(request, 'visualisation.html', {'goals_json_script': goals_json_script})

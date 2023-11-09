@@ -124,89 +124,118 @@ class DjangoSession(models.Model):
 
 class FurnitureCatalog(models.Model):
     furniture_id = models.BigAutoField(primary_key=True)
-    furniture_name = models.CharField(max_length=255)
-    furniture_pack = models.CharField(max_length=255)
-    data = models.TextField()
-    price = models.BigIntegerField()
+    furniture_name = models.TextField(blank=True, null=True)
+    price = models.BigIntegerField(blank=True, null=True)
+    furniture_png = models.TextField(blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'furniture_catalog'
 
 
 class GoalInfo(models.Model):
     goal_id = models.BigAutoField(primary_key=True)
-    goal_desc = models.CharField(max_length=255)
-    bank = models.PositiveBigIntegerField()
-    inventory = models.JSONField(blank=True, null=True)
-    room_info = models.JSONField(blank=True, null=True)
+    goal_desc = models.CharField(max_length=255, blank=True, null=True)
+    bank = models.BigIntegerField(blank=True, null=True)
+    inventory = models.TextField(blank=True, null=True)
+    room_info = models.TextField(blank=True, null=True)
+    vis = models.CharField(max_length=255, blank=True, null=True)
+    streak = models.BigIntegerField(blank=True, null=True)
+    last_checked = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'goal_info'
 
 
 class Goals(models.Model):
-    user_id = models.BigIntegerField()
-    goal_id = models.BigIntegerField()
-    
+    id = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey('UserData', models.DO_NOTHING)
+    goal_id = models.PositiveBigIntegerField()
+
     class Meta:
+        managed = False
         db_table = 'goals'
-        unique_together = (('user_id', 'goal_id'),)
 
 
 class Reminders(models.Model):
-    task_id = models.PositiveBigIntegerField()
-    day_of_week = models.CharField(max_length=255)
+    id = models.BigAutoField(primary_key=True)
+    task = models.ForeignKey('Tasks', models.DO_NOTHING, blank=True, null=True)
+    day_of_week = models.TextField(blank=True, null=True)
     time = models.TimeField(blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'reminders'
 
 
 class Report(models.Model):
     no_field = models.BigAutoField(db_column='No.', primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it ended with '_'.
-    reportee_id = models.BigIntegerField()
-    reportee_username = models.CharField(max_length=255, blank=True, null=True)
-    reporter_id = models.PositiveBigIntegerField()
-    reporter_username = models.CharField(max_length=255, blank=True, null=True)
-    reason = models.CharField(max_length=255)
+    reportee_id = models.BigIntegerField(blank=True, null=True)
+    reportee_username = models.TextField(blank=True, null=True)
+    reporter_id = models.PositiveBigIntegerField(blank=True, null=True)
+    reporter_username = models.TextField(blank=True, null=True)
+    reason = models.TextField(blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'report'
 
 
 class Requests(models.Model):
     no_field = models.BigAutoField(db_column='No.', primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it ended with '_'.
-    date_requested = models.DateField()
-    user_id = models.CharField(max_length=255)
-    user_name = models.CharField(max_length=255, blank=True, null=True)
-    goal_id = models.BigIntegerField()
-    goal_desc = models.CharField(max_length=255)
-    task_id = models.BigIntegerField()
-    task_desc = models.CharField(max_length=255)
-    assigned_reward = models.PositiveBigIntegerField()
-    requested_reward = models.PositiveBigIntegerField()
-    reason = models.CharField(max_length=255)
+    date_requested = models.DateField(blank=True, null=True)
+    user_id = models.TextField(blank=True, null=True)
+    user_name = models.TextField(blank=True, null=True)
+    goal = models.ForeignKey(GoalInfo, models.DO_NOTHING, blank=True, null=True)
+    goal_desc = models.TextField(blank=True, null=True)
+    task_id = models.BigIntegerField(blank=True, null=True)
+    task_desc = models.TextField(blank=True, null=True)
+    assigned_reward = models.PositiveBigIntegerField(blank=True, null=True)
+    requested_reward = models.PositiveBigIntegerField(blank=True, null=True)
+    reason = models.TextField(blank=True, null=True)
+
     class Meta:
+        managed = False
         db_table = 'requests'
 
 
 class Tasks(models.Model):
-    goal_id = models.PositiveBigIntegerField()
+    goal = models.ForeignKey(GoalInfo, models.DO_NOTHING, blank=True, null=True)
     task_id = models.BigAutoField(primary_key=True)
-    task_desc = models.CharField(max_length=255)
-    reward = models.BigIntegerField()
+    task_desc = models.TextField(blank=True, null=True)
+    reward = models.BigIntegerField(blank=True, null=True)
+    last_datetime = models.TextField(blank=True, null=True)
+    sunday = models.TimeField(blank=True, null=True)
+    monday = models.TimeField(blank=True, null=True)
+    tuesday = models.TimeField(blank=True, null=True)
+    wednesday = models.TimeField(blank=True, null=True)
+    thursday = models.TimeField(blank=True, null=True)
+    friday = models.TimeField(blank=True, null=True)
+    saturday = models.TimeField(blank=True, null=True)
+    completed_history = models.TextField(blank=True, null=True)
+    votes = models.TextField(blank=True, null=True)
+    num_votes = models.BigIntegerField(blank=True, null=True)
+    streak = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'tasks'
 
 
 class UserData(models.Model):
     user_id = models.BigAutoField(primary_key=True)
-    user_name = models.CharField(max_length=255, blank=True, null=True)
-    name = models.CharField(max_length=255, blank=True, null=True)
-    email = models.CharField(unique=True, max_length=255)
+    user_name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
     friends_info = models.TextField(blank=True, null=True)
-    password = models.TextField()
+    password = models.CharField(max_length=255, blank=True, null=True)
+    salt = models.CharField(max_length=255, blank=True, null=True)
+    incoming_friend_req = models.TextField(blank=True, null=True)
+    outgoing_friend_req = models.TextField(blank=True, null=True)
+    gem = models.BigIntegerField(blank=True, null=True)
+    num_reported = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'user_data'

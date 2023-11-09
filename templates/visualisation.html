@@ -4,6 +4,96 @@
 {% block title %}Vis{% endblock %}
 
 {% block content %}
+<style>
+    .button4 {
+      border: none;
+      color: white;
+      padding: 15px 45px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .button1 {
+        position: absolute;
+        background-color: #797D62;
+        border: 1px solid black;
+        top: 3%;
+        left: 2%;
+    }
+
+    {box-sizing: border-box;}
+
+    #myBarChart {
+        margin-top: 100px; /* Add some top margin to the canvas */
+        width: 80vw; /* Set the width of the container to 80% of the viewport width */
+        height: 400px; /* Set a fixed height for the container */
+    }
+    #header {
+        width: 99vw;
+        height: 5vw;
+        background-color: #9B9B7A;
+        border: 1px solid black;
+    }
+</style>
+<nav id = "header"></nav>
+<canvas id="myBarChart" width="400" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div id="goals-json" style="display: none;">{{ goals_json_script|safe }}</div>
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var goalsData = JSON.parse(document.getElementById('goals-json').textContent);
+        var labels = [];
+        var data = [];
+
+        console.log("This", goalsData);
+        goalsData.forEach(function(goal) {
+            labels.push(goal.goal_id);
+            data.push(goal.money_in_bank);
+        });
+
+        var ctx = document.getElementById('myBarChart').getContext('2d');
+
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Money in Bank',
+                    data: data,
+                    backgroundColor: '#B58463',
+                    borderColor: '#997B66',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear', // Use 'linear' for numeric data
+                        position: 'bottom', // Position the X-axis at the bottom of the chart
+                        title: {
+                            display: true,
+                            text: 'Goal ID' // X-axis label
+                        }
+            },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Money in Bank' // Y-axis label
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+<a href= '/homepage'>
+    <button class="button1 button4">Back</button>
+</a>
 {% endblock %}
