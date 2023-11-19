@@ -5,9 +5,9 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  <meta http-equiv="Refresh" content="0; url='/homepage/'" />
+<meta http-equiv="Refresh" content="0; url='/homepage/'" />
 {% else %}
-  <p>You are not logged in</p>
-  <a href="/login/">Log In</a>
+<p>You are not logged in</p>
+<a href="/login/">Log In</a>
 {% endif %}
 {% endblock %}

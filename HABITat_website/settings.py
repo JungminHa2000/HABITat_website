@@ -133,3 +133,10 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'homepage'
 LOGOUT_REDIRECT_URL = 'homepage'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587  # or the appropriate port for your SMTP server
+EMAIL_HOST_USER = 'HABITat.cs4500@gmail.com'
+EMAIL_HOST_PASSWORD = 'rlln uqdy bkoy eeqc'
+EMAIL_USE_TLS = True  # Or EMAIL_USE_SSL = True if SSL is required

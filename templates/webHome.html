@@ -5,134 +5,358 @@
 
 {% block content %}
 <style>
-    .center {
-        text-align: center;
-        width: 300px;
-        height: 100px;
-        transform: translate(41vw, 30vh);
-        border: 6px solid;
-        background-color: #BAA587;
-        border-color: #BAA587;
+    #header {
+        width: 97vw;
+        height: 5vh;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        background-color: white;
+        border: 2px solid rgb(220, 225, 217);
+        padding: 0 20px;
+        border-radius: 0.5vw;
+        background-color: rgb(30, 30, 30);
+        margin: 0 auto;
     }
 
-    img {
-        transform: translate(92vw, 70vh);
-        width: 130px;
-        height: 90px;
+    .sidebar-header {
+        width: 100%;
+        text-align: left;
+        padding: 0.1vw;
+        font-weight: bold;
     }
-        
-    #sidebar {
-        width: 200px;
-        height: 500px;
-        float: left;
-        background-color: #9B9B7A;
-        border: 1px solid black;
+
+    .button-container {
+        display: flex;
+        gap: 10px;
     }
 
     .button {
         border: none;
         color: white;
-        padding: 20px 45px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 20px;
+        font-size: 0.8vw;
         cursor: pointer;
-    }
-
-    .button1 {
-        background-color: #797D62;
-        border: 1px solid black;
-    }
-
-    .button2 {
-        border: none;
-        color: white;
-        padding: 21px 53px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 20px;
-        cursor: pointer;
-        border: 1px solid black;
-    }
-
-    .button3 {
-        border: none;
-        color: white;
-        padding: 10px 30px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 15px;
-        cursor: pointer;
-        border: 1px solid black;
-        position: absolute;
-        right: 1%;
-        top: 3%;
-    }
-
-    .button4 {
-        border: none;
-        color: white;
-        padding: 22px 61px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 20px;
-        cursor: pointer;
-        border: 1px solid black;
-    }
-
-    .button5 {
-        border: none;
-        color: white;
-        padding: 22px 49px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 20px;
-        cursor: pointer;
-        border: 1px solid black;
+        width: auto;
+        height: 3vh;
+        background-color: rgb(220, 225, 217);
+        border: 1px solid rgb(30, 30, 30);
+        color: rgb(30, 30, 30);
+        padding: 0 10px;
+        border-radius: 0.5vw;
     }
 
     body {
-        font-family: Arial, sans-serif;
-   }
+        font-family: 'Roboto';
+        background-color: rgb(30, 30, 30);
+        color: rgb(220, 225, 217);
+    }
+
+    #content-container {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .table-container {
+        margin-top: 10vh;
+    }
+
+    .user-count-container,
+    .another-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 20px;
+        width: 20%;
+        height: 10vh;
+        float: left;
+        margin-right: 2%;
+    }
+
+    .box {
+        border: 2px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        text-align: center;
+        width: 13vw;
+        height: 10vh;
+        float: left;
+        margin-right: 2%;
+        border-radius: 0.5vw;
+    }
+
+    .box-content p {
+        text-align: left;
+        width: 70%;
+        font-weight: bold;
+        font-size: 1vw;
+    }
+
+    .user-icon {
+        font-size: 3em;
+        margin-right: 45px;
+    }
+
+    .report-icon {
+        font-size: 3em;
+        margin-right: 25px;
+    }
+
+    .request-icon {
+        font-size: 3em;
+        margin-right: 20px;
+    }
+
+    .goal-icon {
+        font-size: 3em;
+        margin-right: 15px;
+    }
+
+    .ban-icon {
+        font-size: 3em;
+        margin-right: 10px;
+    }
+
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
 </style>
 
 <body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        integrity="correct-integrity-value-here" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 
-<h1 style = 'text-align: center;'>Home Page</h1>
-<nav id = "sidebar" />
+    <nav id="header">
+        <div class="sidebar-header">
+            <h2>HABITat</h2>
+        </div>
+        <div class="button-container">
+            <a href='/requests/'><button class="button">Requests</button></a>
+            <a href='/reports/'><button class="button">Reports</button></a>
+            <a href='/show_all_users/'><button class="button">Users</button></a>
+            <a href='/user_info/1/'><button class="button">Acc_Overview</button></a>
+            <a href='/vis/'><button class="button">Graphs</button></a>
+            <a href='/logout/'><button class="button">Logout</button></a>
+        </div>
+    </nav>
 
+    <div id="content-container">
+        <h1>Dashboard</h1>
 
-<div class = "center">
-    <h2>Welcome back, HABITat Administrator!</strong>
-</div>
-<img src = 'https://lh3.googleusercontent.com/pw/AIL4fc_jYkphueYY4dlHi4SS1S98EFpe-e9jUOq0wycPiroSZMH-k3aaryF46w4YU2JyCYfrELhqyhR3F1s3jnOSb332cofzGGrpqqZY39YaLE7Chzp7W7I=w2400' alt = 'HABITat Logo' />
+        <!-- User count box -->
+        <div class="box">
+            <div class="box-content">
+                <h4>Total Users:</h4>
+                <p>{{ user_count }}</p>
+            </div>
+            <i class="fas fa-user user-icon"></i>
+        </div>
 
-<a href= '/requests/'>
-    <button class="button button1" style = 'transform: translate(7%, -300%);'>Requests</button>
-</a>
+        <!-- Report count box -->
+        <div class="box">
+            <div class="box-content">
+                <h4>Total Reports:</h4>
+                <p>{{ report_count }}</p>
+            </div>
+            <i class="fas fa-flag report-icon"></i>
+        </div>
 
+        <!-- Request count box -->
+        <div class="box">
+            <div class="box-content">
+                <h4>Total Requests:</h4>
+                <p>{{ request_count }}</p>
+            </div>
+            <i class="fas fa-money-bill-alt request-icon"></i>
+        </div>
 
-<a href= '/reports/'>
-    <button class="button2 button1" style = 'transform: translate(7%, -250%);'>Reports</button>
-</a>
+        <!-- Goals count box -->
+        <div class="box">
+            <div class="box-content">
+                <h4>Total Goals Created:</h4>
+                <p>{{ goal_count }}</p>
+            </div>
+            <i class="fas fa-bullseye goal-icon"></i>
+        </div>
 
-<a href= '/show_all_users/'>
-    <button class="button4 button1" style = 'transform: translate(7%, -200%);'>Users</button>
-</a>
+        <!-- Banned User count box -->
+        <div class="box">
+            <div class="box-content">
+                <h4>Total User Banned:</h4>
+                <p>{{ banned_user_count }}</p>
+            </div>
+            <i class="fas fa-user-slash ban-icon"></i>
+        </div>
 
-<a href= '/vis/'>
-    <button class="button5 button1" style = 'transform: translate(7%, -150%);'>Data Vis</button>
-</a>
+        <!-- Clear the float to ensure proper alignment -->
+        <div class="clearfix"></div>
+    </div>
 
-<a href= '/logout/'>
-    <button class="button3 button1">Logout</button>
-</a>
+    <!-- Report chart box -->
+    <div id="content-container">
+        <div class="box" style="width: 96vw; height: 40vh; margin: 0 auto;">
+            <div style="width: 100%; height: 100%;">
+                <canvas id="reportChart" style="width: 100%; height: 100%;"></canvas>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <!-- Request chart box -->
+    <div id="content-container">
+        <div class="box" style="width: 96vw; height: 40vh; margin: 0 auto;">
+            <div style="width: 100%; height: 100%;">
+                <canvas id="requestChart" style="width: 100%; height: 100%;"></canvas>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <div id="date-json" style="display: none;">{{ unique_dates | safe }}</div>
+    <div id="count-json" style="display: none;">{{ report_counts | safe }}</div>
+
+    <div id="date-json2" style="display: none;">{{ unique_dates2 | safe }}</div>
+    <div id="count-json2" style="display: none;">{{ request_counts | safe }}</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Retrieve data passed from Django view
+            var uniqueDatesText = (document.getElementById('date-json2').textContent);
+            var requestCountsText = (document.getElementById('count-json2').textContent);
+
+            var uniqueDates = uniqueDatesText.split(',');
+            var requestCounts = requestCountsText.split(',');
+
+            uniqueDates = uniqueDates.map(date => date.replace(/[\[\]']+/g, ''));
+            requestCounts = requestCounts.map(int => int.replace(/[\[\]']+/g, ''));
+
+            var data = uniqueDates.map((date, index) => ({ date, count: requestCounts[index] }));
+
+            data.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            uniqueDates = data.map(entry => entry.date);
+            requestCounts = data.map(entry => entry.count);
+            
+            // Get the canvas element
+            var ctx = document.getElementById('requestChart').getContext('2d');
+
+            // Create the line chart
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: uniqueDates,
+                    datasets: [{
+                        label: 'Number of Requests Created',
+                        data: requestCounts,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Requests Over Time',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0,
+                                stepSize: 1
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)' // Change grid lines color here
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)' // Change grid lines color here
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Retrieve data passed from Django view
+            var uniqueDatesText = (document.getElementById('date-json').textContent);
+            var reportCountsText = (document.getElementById('count-json').textContent);
+
+            var uniqueDates = uniqueDatesText.split(',');
+            var reportCounts = reportCountsText.split(',');
+
+            uniqueDates = uniqueDates.map(date => date.replace(/[\[\]']+/g, ''));
+            reportCounts = reportCounts.map(int => int.replace(/[\[\]']+/g, ''));
+            var data = uniqueDates.map((date, index) => ({ date, count: reportCounts[index] }));
+
+            data.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            uniqueDates = data.map(entry => entry.date);
+            reportCounts = data.map(entry => entry.count);
+            // Get the canvas element
+            var ctx = document.getElementById('reportChart').getContext('2d');
+
+            // Create the line chart
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: uniqueDates,
+                    datasets: [{
+                        label: 'Number of Reports Created',
+                        data: reportCounts,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Reports Over Time',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0,
+                                stepSize: 1
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)' // Change grid lines color here
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)' // Change grid lines color here
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
 </body>
-
-
 {% endblock %}

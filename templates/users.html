@@ -5,41 +5,111 @@
 
 {% block content %}
 <style>
-    table, th, td {
-        border: 1px solid black;
-        background-color: #F7EACA;
-        margin-top: 5.5%;
-        width: 99vw
-    }
-    th {
-        background-color: #B58463;
-    }
-    #header {
+    table {
+        border-collapse: separate;
+        border-spacing: 0.5vw;
         width: 99vw;
-        height: 5vw;
-        background-color: #9B9B7A;
-        border: 1px solid black;
+        border-radius: 0.5vw;
     }
-    .button4 {
+
+    th {
+        padding: 0.5vw;
+        text-align: center;
+        border-radius: 0.5vw;
+        background-color: rgb(208, 214, 214);
+        color: rgb(0, 0, 0);
+        font-size: 0.9vw;
+        font-weight: bold;
+    }
+
+    td {
+        padding: 1vw;
+        text-align: center;
+        border-radius: 0.5vw;
+        background-color: rgb(208, 214, 214);
+        color: rgb(0, 0, 0);
+        font-size: 0.9vw;
+        font-weight: bold;
+    }
+
+    .button {
         border: none;
         color: white;
-        padding: 15px 45px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 15px;
+        font-size: 0.8vw;
         cursor: pointer;
-    }
-    .button5 {
-        position: absolute;
+        width: auto;
+        /* Let the button width adjust based on content */
+        height: 3vh;
         background-color: #797D62;
         border: 1px solid black;
-        top: 3%;
-        left: 2%;
+        padding: 0 10px;
+        /* Add some horizontal padding to buttons */
+        border-radius: 0.5vw;
+    }
+
+    #sidebar {
+        width: 97vw;
+        height: 5vh;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 0.5vw;
+        background-color: rgb(100, 113, 179);
+        border: 2px solid rgb(208, 214, 214);
+        padding: 0 20px;
+        margin: 0 auto;
+    }
+
+    #userDropdownLabel {
+        margin-right: -75vw;
+        color: rgb(219, 224, 216);
+        font-size: 1.2vw;
+    }
+
+    #userDropdown {
+        width: 12vw;
+        font-size: 1.1vw;
+    }
+
+    body {
+        font-family: 'Roboto';
+        background-color: rgb(100, 113, 179);
+    }
+
+    .hide-row {
+        display: none;
+    }
+
+    /* Show rows with the class show-row */
+    .show-row {
+        display: table-row;
+    }
+
+    .banned {
+        opacity: 0.3;
+        /* Reduces the opacity to make it look grayed out */
     }
 </style>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<nav id="sidebar">
+    <a href='/homepage'><button class="button">Home</button></a>
+    <label id="userDropdownLabel" for="userDropdown">Sort by:</label>
+    <!-- Dropdown for user selection -->
+    <select id="userDropdown" onchange="showSelectedUser()">
+        <option value="">Select a User ID</option>
+        {% for user in all_user_list %}
+        <option value="{{ user.user_id }}">{{ user.user_id }}</option>
+        {% endfor %}
+    </select>
+</nav>
+<h1 style="color: rgb(208,214,214);">Users</h1>
 
-<nav id = "header" />
+<label style="color:rgb(219, 224, 216)">Show All Users:</label>
+<input type="checkbox" id="showAllUsers" onchange="toggleAllUsers()">
+
 <table>
     <tr>
         <th>User_id</th>
@@ -47,16 +117,90 @@
         <th>Name</th>
         <th>Email</th>
     </tr>
-    <tr>
-        {% for user in all_user_list %}
-        <td>{{user.user_id}}</td>
-        <td>{{user.user_name}}</td>
-        <td>{{user.name}}</td>
-        <td>{{user.email}}</td>
+
+    {% for user in not_banned %}
+    <tr class="notbanned">
+        <td><a href="/user_info/{{ user.user_id }}">{{ user.user_id }}</a></td>
+        <td>{{ user.user_name }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td><a href="/delete_user/{{ user.user_id }}">Remove User</a></td>
     </tr>
     {% endfor %}
+    {% for user in all_user_list %}
+    {% if user.banned == 1 %}
+    <tr class="all-users-row banned" user_id="{{ user.user_id }}">
+        <td>{{ user.user_id }}</td>
+        <td>{{ user.user_name }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>User is banned</td>
+    </tr>
+    {% else %}
+    <tr class="all-users-row" user_id="{{ user.user_id }}">
+        <td><a href="/user_info/{{ user.user_id }}">{{ user.user_id }}</a></td>
+        <td>{{ user.user_name }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td><a href="/delete_user/{{ user.user_id }}">Remove User</a></td>
+    </tr>
+    {% endif %}
+    {% endfor %}
 </table>
-<a href= '/homepage'>
-    <button class="button4 button5">Back</button>
-  </a>
+
+<script>
+    function showSelectedUser() {
+        const dropdown = document.getElementById("userDropdown");
+        const selectedUserId = dropdown.value;
+
+        const allUsers = document.querySelectorAll('.all-users-row');
+        const notBanned = document.querySelectorAll('.notbanned');
+
+        if (!selectedUserId) {
+            allUsers.forEach(row => {
+                row.style.display = "table-row";
+            });
+        } else {
+            allUsers.forEach(row => {
+                row.style.display = "none";
+            });
+            notBanned.forEach(row => {
+                row.style.display = "none";
+            });
+
+            const selectedUserRow = document.querySelector(`.all-users-row[user_id="${selectedUserId}"]`);
+            if (selectedUserRow) {
+                selectedUserRow.style.display = "table-row";
+            }
+        }
+    }
+
+    function toggleAllUsers() {
+        const showAllUsers = document.getElementById('showAllUsers').checked;
+        const allUsers = document.querySelectorAll('.all-users-row');
+        const notBanned = document.querySelectorAll('.notbanned');
+
+        if (!showAllUsers) {
+            allUsers.forEach(user => {
+                user.style.display = 'none';
+            });
+            notBanned.forEach(user => {
+                user.style.display = 'table-row';
+            });
+        } else {
+            allUsers.forEach(user => {
+                user.style.display = 'table-row';
+            });
+            notBanned.forEach(user => {
+                user.style.display = 'none';
+            });
+        }
+    }
+
+    window.onload = () => {
+        toggleAllUsers();
+    };
+</script>
+
+
 {% endblock %}

@@ -5,95 +5,350 @@
 
 {% block content %}
 <style>
-    .button4 {
-      border: none;
-      color: white;
-      padding: 15px 45px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 15px;
-      cursor: pointer;
-    }
-    .button1 {
-        position: absolute;
+    .button {
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 0.8vw;
+        cursor: pointer;
+        width: auto;
+        height: 3vh;
         background-color: #797D62;
         border: 1px solid black;
-        top: 3%;
-        left: 2%;
+        padding: 0 10px;
+        border-radius: 5px;
     }
 
-    {box-sizing: border-box;}
+    .charts-container {
+        display: flex;
+        flex-direction: column;
+        /* Stack charts vertically */
+        justify-content: space-between;
+        align-items: center;
+        /* Center charts horizontally */
+        margin-top: 1vh;
+    }
 
     #myBarChart {
-        margin-top: 100px; /* Add some top margin to the canvas */
-        width: 80vw; /* Set the width of the container to 80% of the viewport width */
-        height: 400px; /* Set a fixed height for the container */
+        width: 40vw;
+        height: 100vh;
     }
-    #header {
-        width: 99vw;
-        height: 5vw;
-        background-color: #9B9B7A;
+
+    #myTreeChart {
+        width: 100vw;
+        height: 90vh;
+    }
+
+    /* Add this style for the new containers */
+    .title-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .title {
+        flex-grow: 1;
+        /* Allow the title to take available space */
+    }
+
+    .button-container {
+        margin-left: 10px;
+        /* Adjust the margin for spacing */
+    }
+
+    /* Add this style to move the button to the right */
+    #treeChartTitle {
+        text-align: center;
+        color: rgb(219, 224, 216);
+    }
+
+    #barChartTitle {
+        text-align: center;
+        color: rgb(219, 224, 216);
+    }
+
+    body {
+        background-color: #BAA587;
+        font-family: 'Roboto';
+    }
+
+    #line {
+        width: 100vw;
+        height: 5px;
+        background-color: #797d62;
+    }
+
+    #jumpToTop {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #797D62;
         border: 1px solid black;
+        color: white;
+        padding: 10px 15px;
+        cursor: pointer;
+        z-index: 1000;
+        border-radius: 5px;
+        /* Add rounded corners */
+    }
+
+    #sidebar {
+        width: 97vw;
+        height: 5vh;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 0.5vw;
+        background-color: #BAA587;
+        border: 2px solid rgb(219, 224, 216);
+        padding: 0 20px;
+        margin: 0 auto;
+    }
+
+    .sidebar-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .chart-button {
+        background-color: #797D62;
+        border: 1px solid black;
+        color: white;
+        padding: 5px 10px;
+        cursor: pointer;
     }
 </style>
-<nav id = "header"></nav>
-<canvas id="myBarChart" width="400" height="400"></canvas>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<body>
+    <nav id="sidebar">
+        <a href='/homepage'><button class="button">Home</button></a>
+        <div class="sidebar-buttons">
+            <a href="#barChartTitle"><button class="button chart-button">Money in Bank</button></a>
+            <a href="#treeChartTitle"><button class="button chart-button">Report Relationship</button></a>
+        </div>
+    </nav>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <button id="jumpToTop" onclick="jumpToTop()">^</button>
 
-<div id="goals-json" style="display: none;">{{ goals_json_script|safe }}</div>
+    <div class="charts-container">
+        <h2 id="barChartTitle">Money in Bank By Goal</h2>
+        <canvas id="myBarChart"></canvas>
+        <div id="line"></div>
+        <div class="title-container">
+            <div class="title">
+                <h2 id="treeChartTitle">Report Relationship</h2>
+            </div>
+            <div class="button-container">
+                <a href="/reports"><button class="button">Go to Reports</button></a>
+            </div>
+        </div>
+        <canvas id="myTreeChart"></canvas>
+    </div>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var goalsData = JSON.parse(document.getElementById('goals-json').textContent);
-        var labels = [];
-        var data = [];
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 
-        console.log("This", goalsData);
-        goalsData.forEach(function(goal) {
-            labels.push(goal.goal_id);
-            data.push(goal.money_in_bank);
-        });
+    <div id="goals-json" style="display: none;">{{ goals_json_script|safe }}</div>
+    <div id="tree-data" style="display: none;">{{ tree_data|safe }}</div>
 
-        var ctx = document.getElementById('myBarChart').getContext('2d');
+    <script>
+        // Function to scroll to the top when the button is clicked
+        function jumpToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
 
-        var myBarChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Money in Bank',
-                    data: data,
-                    backgroundColor: '#B58463',
-                    borderColor: '#997B66',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        type: 'linear', // Use 'linear' for numeric data
-                        position: 'bottom', // Position the X-axis at the bottom of the chart
-                        title: {
-                            display: true,
-                            text: 'Goal ID' // X-axis label
+        document.addEventListener('DOMContentLoaded', function () {
+            var goalsData = JSON.parse(document.getElementById('goals-json').textContent);
+            var treeData = JSON.parse(document.getElementById('tree-data').textContent);
+            var labels = [];
+            var data = [];
+            var nodes = [];
+            var edges = [];
+            var posScale = 700;
+
+            treeData.forEach(function (reporter) {
+                if (!nodes.some(node => node.id === reporter.id)) {
+                    nodes.push({
+                        id: reporter.id,
+                        label: reporter.username,
+                        x: Math.random() * posScale, 
+                        y: Math.random() * posScale  
+                    });
+                }
+                reporter.children.forEach(function (reportee) {
+                    edges.push({
+                        source: reporter.id,
+                        target: reportee.id
+                    });
+                    if (!nodes.some(node => node.id === reportee.id)) {
+                        nodes.push({
+                            id: reportee.id,
+                            label: reportee.username,
+                            x: Math.random() * posScale, 
+                            y: Math.random() * posScale 
+                        });
+                    }
+                });
+            });
+
+            goalsData.forEach(function (goal) {
+                labels.push(goal.goal_id);
+                data.push(goal.money_in_bank);
+            });
+
+            var ctx = document.getElementById('myBarChart').getContext('2d');
+
+            var myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Money in Bank', //Legend
+                        data: data,
+                        backgroundColor: '#B58463',
+                        borderColor: '#997B66',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: 'Goal ID', // X-axis label
+                                color: 'rgb(219,224,216)'
+                            },
+                            ticks: {
+                                precision: 0,
+                                stepSize: 1
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Money in Bank', // Y-axis label
+                                color: 'rgb(219,224,216)'
+                            },
+                            ticks: {
+                                precision: 0,
+                                stepSize: 50
+                            }
                         }
-            },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Money in Bank' // Y-axis label
+                    }
+                }
+            });
+
+            // Dynamically calculate canvas dimensions based on node positions
+            var maxX = Math.max(...nodes.map(node => node.x));
+            var maxY = Math.max(...nodes.map(node => node.y));
+            var nodeSize = 13;
+            var arrowheadSize = 15;
+
+            var canvasWidth = window.innerWidth * 0.70;
+            var canvasHeight = window.innerHeight * 0.70;
+
+            var treeCanvas = document.getElementById('myTreeChart');
+            treeCanvas.width = canvasWidth;
+            treeCanvas.height = canvasHeight;
+
+            var treeCtx = treeCanvas.getContext('2d');
+
+            // Calculate the maximum dimensions considering both node size and text size
+            var maxTextWidth = Math.max(...nodes.map(node => treeCtx.measureText(node.label).width));
+            var maxTextHeight = 14;
+
+            var maxNodeWidth = nodeSize * 2;
+            var maxNodeHeight = nodeSize * 2; 
+
+            var scaleWidth = (canvasWidth - maxTextWidth) / maxX;
+            var scaleHeight = (canvasHeight - maxTextHeight) / maxY;
+
+            var scale = Math.min(scaleWidth, scaleHeight);
+
+            // Function to check if two nodes are overlapping
+            function nodesOverlap(node1, node2) {
+                var dx = node1.x - node2.x;
+                var dy = node1.y - node2.y;
+                var distance = Math.sqrt(dx * dx + dy * dy);
+                return distance < nodeSize * 2; 
+            }
+
+            // Function to resolve node collisions
+            function resolveNodeCollisions(nodes) {
+                for (var i = 0; i < nodes.length; i++) {
+                    for (var j = i + 1; j < nodes.length; j++) {
+                        if (nodesOverlap(nodes[i], nodes[j])) {
+                            nodes[j].x += (nodeSize * 2) + 5; 
                         }
                     }
                 }
             }
+
+            nodes.forEach(function (node) {
+                node.x = node.x * scale + 20;
+                node.y = node.y * scale + 40;
+
+                node.x = Math.max(maxNodeWidth / 2, Math.min(canvasWidth - maxNodeWidth / 2, node.x));
+                node.y = Math.max(maxNodeHeight / 2, Math.min(canvasHeight - maxNodeHeight / 2, node.y));
+                node.x = Math.round(node.x);
+                node.y = Math.round(node.y);
+            });
+            // Resolve node collisions
+            resolveNodeCollisions(nodes);
+
+            nodes.forEach(function (node) {
+                treeCtx.beginPath();
+                treeCtx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI);
+                treeCtx.fillStyle = '#997B66';
+                treeCtx.fill();
+                treeCtx.closePath();
+            });
+            nodes.forEach(function (node) {
+                // Draw node label with some space above the node
+                treeCtx.font = '1.5vh Roboto';
+                treeCtx.fillStyle = '#000000';
+                treeCtx.textAlign = 'center';
+                treeCtx.fillText(node.label, node.x, node.y - nodeSize - 10);
+            });
+            edges.forEach(function (edge) {
+                var sourceNode = nodes.find(function (node) {
+                    return node.id === edge.source;
+                });
+                var targetNode = nodes.find(function (node) {
+                    return node.id === edge.target;
+                });
+                // Draw line connecting source and target nodes
+                treeCtx.beginPath();
+                treeCtx.moveTo(sourceNode.x, sourceNode.y);
+                treeCtx.lineTo(targetNode.x, targetNode.y);
+                treeCtx.strokeStyle = 'rgb(219,224,216)';
+                treeCtx.stroke();
+                treeCtx.closePath();
+
+                // Draw arrowhead
+                drawArrowhead(treeCtx, sourceNode.x, sourceNode.y, targetNode.x, targetNode.y);
+            });
+
+            function drawArrowhead(context, fromX, fromY, toX, toY) {
+                var angle = Math.atan2(toY - fromY, toX - fromX);
+
+                context.beginPath();
+                context.moveTo(toX, toY);
+                context.lineTo(toX - arrowheadSize * Math.cos(angle - Math.PI / 6), toY - 15 * Math.sin(angle - Math.PI / 6));
+                context.lineTo(toX - arrowheadSize * Math.cos(angle + Math.PI / 6), toY - 15 * Math.sin(angle + Math.PI / 6));
+                context.fillStyle = 'rgb(219,224,216)';
+                context.fill();
+                context.closePath();
+            }
         });
-    });
-</script>
-<a href= '/homepage'>
-    <button class="button1 button4">Back</button>
-</a>
+    </script>
+</body>
 {% endblock %}

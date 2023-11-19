@@ -1,0 +1,138 @@
+<!-- templates/user_info.html -->
+{% extends 'base.html' %}
+
+{% block title %}User Information{% endblock %}
+
+{% block content %}
+<style>
+    table {
+        border-collapse: separate;
+        border-spacing: 0.5vw;
+        width: 99vw;
+        border-radius: 0.5vw;
+    }
+
+    th {
+        padding: 0.5vw;
+        text-align: center;
+        border-radius: 0.5vw;
+        background-color: rgb(208, 214, 214);
+        color: rgb(0, 0, 0);
+        font-size: 0.9vw;
+        font-weight: bold;
+    }
+
+    td {
+        padding: 1vw;
+        text-align: center;
+        border-radius: 0.5vw;
+        background-color: rgb(208, 214, 214);
+        color: rgb(0, 0, 0);
+        font-size: 0.9vw;
+        font-weight: bold;
+    }
+
+    #sidebar {
+        width: 97vw;
+        height: 5vh;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 0.5vw;
+        background-color: #B56D40;
+        border: 2px solid rgb(219, 224, 216);
+        padding: 0 20px;
+        margin: 0 auto;
+    }
+
+    .button {
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 0.8vw;
+        cursor: pointer;
+        width: auto;
+        /* Let the button width adjust based on content */
+        height: 3vh;
+        background-color: #797D62;
+        border: 1px solid black;
+        padding: 0 10px;
+        /* Add some horizontal padding to buttons */
+        border-radius: 0.5vw;
+    }
+
+    body {
+        font-family: 'Roboto';
+        background-color: #B56D40;
+        color: rgb(208, 214, 214);
+    }
+
+    #userSelector {
+        background-color: rgb(208, 214, 214);
+        width: 12vw;
+        font-size: 1.1vw;
+    }
+
+    #userSelectorLabel {
+        margin-right: -75vw;
+        color: rgb(219, 224, 216);
+        font-size: 1.1vw;
+    }
+</style>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<nav id="sidebar">
+    <a href='/homepage'><button class="button">Home</button></a>
+    <label id="userSelectorLabel" for="userSelector">Sort by:</label>
+
+    <select id="userSelector" onchange="changeUser(this)">
+        <option value="">Select User</option>
+        {% for user_id in user_ids %}
+        <option value="{{ user_id }}">{{ user_id }}</option>
+        {% endfor %}
+    </select>
+</nav>
+<script>
+    function changeUser(selectElement) {
+        var selectedUserId = selectElement.value;
+        if (selectedUserId) {
+            window.location.href = "/user_info/" + selectedUserId + "/";
+        }
+    }
+</script>
+
+
+<h1 style="color: rgb(208,214,214);">{{ username }} Account Overview</h1>
+
+{% for goal in goal_list %}
+<h2>Goal ID: {{ goal.goal_id }}</h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;Goal Description: {{ goal.goal_desc }}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;Bank: {{ goal.bank }}</p>
+
+<table>
+    <colgroup>
+        <col style="width: 10%;">
+        <col style="width: 60%;">
+        <col style="width: 30%;">
+    </colgroup>
+    <thead>
+        <tr>
+            <th style="width: 10%;">Task ID</th>
+            <th style="width: 60%;">Task Description</th>
+            <th style="width: 30%;">Reward</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in goal.tasks %}
+        <tr>
+            <td>{{ task.task_id }}</td>
+            <td>{{ task.task_desc }}</td>
+            <td>{{ task.reward }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
+
+{% endblock %}

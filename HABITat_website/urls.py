@@ -21,18 +21,19 @@ from . import views
 
 urlpatterns = [
     path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
-    #path('login/', TemplateView.as_view(template_name='Registration/login.html'), name='login'),
-    #path('admin/', admin.site.urls),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('vis/', views.visualisation, name='vis'),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('homepage/', TemplateView.as_view(template_name='webHome.html'), name='homepage'),
+    path('homepage/', views.home_summary, name='homepage'),
     path('reports/', views.all_reports, name='all_reports'),
+    path('reports/<str:reportee>/', views.get_reportee_reports, name='reportee_reports'),
     path('requests/', views.all_requests, name='all_requests'),
     path('delete/<int:req_id>/', views.decline_request, name='delete'),
     path('accept/<int:req_id>/', views.accept_request, name='accept'),
     path('delete_rep/<int:rep_id>/', views.decline_report, name='delete_rep'),
-    path('accept_rep/<int:rid>/', views.accept_report, name ='accept_rep'),
+    path('accept_rep/<int:rep_id>/', views.accept_report, name ='accept_rep'),
     path('show_all_users/', views.show_all_users, name='show_all_users'),
+    path('user_info/<int:user_id>/', views.user_info, name='user_info'),
+    path('delete_user/<int:uid>/', views.delete_user, name='delete_user'),
 ]

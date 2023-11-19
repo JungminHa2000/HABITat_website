@@ -83,7 +83,8 @@ class DjangoAdminLog(models.Model):
     object_repr = models.CharField(max_length=200)
     action_flag = models.PositiveSmallIntegerField()
     change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
+    content_type = models.ForeignKey(
+        'DjangoContentType', models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
 
     class Meta:
@@ -140,7 +141,6 @@ class GoalInfo(models.Model):
     inventory = models.TextField(blank=True, null=True)
     room_info = models.TextField(blank=True, null=True)
     vis = models.CharField(max_length=255, blank=True, null=True)
-    streak = models.BigIntegerField(blank=True, null=True)
     last_checked = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
@@ -170,12 +170,15 @@ class Reminders(models.Model):
 
 
 class Report(models.Model):
-    no_field = models.BigAutoField(db_column='No.', primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it ended with '_'.
+    # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it ended with '_'.
+    no_field = models.BigAutoField(db_column='No.', primary_key=True)
+    date_reported = models.DateField(blank=True, null=True)
     reportee_id = models.BigIntegerField(blank=True, null=True)
     reportee_username = models.TextField(blank=True, null=True)
     reporter_id = models.PositiveBigIntegerField(blank=True, null=True)
     reporter_username = models.TextField(blank=True, null=True)
     reason = models.TextField(blank=True, null=True)
+    admin_responded = models.BigIntegerField(blank=True, null=False)
 
     class Meta:
         managed = False
@@ -183,17 +186,20 @@ class Report(models.Model):
 
 
 class Requests(models.Model):
-    no_field = models.BigAutoField(db_column='No.', primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it ended with '_'.
+    # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it ended with '_'.
+    no_field = models.BigAutoField(db_column='No.', primary_key=True)
     date_requested = models.DateField(blank=True, null=True)
     user_id = models.TextField(blank=True, null=True)
     user_name = models.TextField(blank=True, null=True)
-    goal = models.ForeignKey(GoalInfo, models.DO_NOTHING, blank=True, null=True)
+    goal = models.ForeignKey(
+        GoalInfo, models.DO_NOTHING, blank=True, null=True)
     goal_desc = models.TextField(blank=True, null=True)
     task_id = models.BigIntegerField(blank=True, null=True)
     task_desc = models.TextField(blank=True, null=True)
     assigned_reward = models.PositiveBigIntegerField(blank=True, null=True)
     requested_reward = models.PositiveBigIntegerField(blank=True, null=True)
     reason = models.TextField(blank=True, null=True)
+    admin_responded = models.BigIntegerField(blank=True, null=False)
 
     class Meta:
         managed = False
@@ -201,7 +207,8 @@ class Requests(models.Model):
 
 
 class Tasks(models.Model):
-    goal = models.ForeignKey(GoalInfo, models.DO_NOTHING, blank=True, null=True)
+    goal = models.ForeignKey(
+        GoalInfo, models.DO_NOTHING, blank=True, null=True)
     task_id = models.BigAutoField(primary_key=True)
     task_desc = models.TextField(blank=True, null=True)
     reward = models.BigIntegerField(blank=True, null=True)
@@ -235,6 +242,7 @@ class UserData(models.Model):
     outgoing_friend_req = models.TextField(blank=True, null=True)
     gem = models.BigIntegerField(blank=True, null=True)
     num_reported = models.BigIntegerField(blank=True, null=True)
+    banned = models.BigIntegerField(blank=True, null=False)
 
     class Meta:
         managed = False
