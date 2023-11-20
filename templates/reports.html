@@ -25,7 +25,7 @@
     font-weight: bold;
   }
 
-  .button {
+  .accept_button {
     background-color: #04AA6D;
     color: white;
     padding: 14px 20px;
@@ -37,7 +37,7 @@
     border-radius: 0.5vw;
   }
 
-  .button1 {
+  .reject_button {
     background-color: red;
     color: white;
     padding: 14px 20px;
@@ -57,12 +57,12 @@
     height: 100%;
   }
 
-  .button,
-  .button1 {
+  .accept_button,
+  .reject_button {
     width: auto;
   }
 
-  .button3 {
+  .home_button {
     border: none;
     color: white;
     text-align: center;
@@ -78,7 +78,7 @@
     border-radius: 0.5vw;
   }
 
-  #sidebar {
+  #header {
     width: 97vw;
     height: 5vh;
     display: flex;
@@ -108,12 +108,10 @@
     font-size: 1.1vw;
   }
 
-  /* Initially hide rows with the class hide-row */
   .hide-row {
     display: none;
   }
 
-  /* Show rows with the class show-row */
   .show-row {
     display: table-row;
   }
@@ -125,8 +123,8 @@
 
 <body>
   <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-  <nav id="sidebar">
-    <a href='/homepage'><button class="button3">Home</button></a>
+  <nav id="header">
+    <a href='/homepage'><button class="home_button">Home</button></a>
     <label id="sortLabel" for="sortSelect">Sort by:</label>
     <select id="sortSelect" onchange="sortTable()">
       <option value="reporter">Reporter Username</option>
@@ -162,10 +160,10 @@
       <td>
         <div class="button-container">
           <a href='/accept_rep/{{report.no_field}}/'>
-            <button class="button">Accept</button>
+            <button class="accept_button">Accept</button>
           </a>
           <a href='/delete_rep/{{report.no_field}}/'>
-            <button class="button1">Reject</button>
+            <button class="reject_button">Reject</button>
           </a>
         </div>
       </td>
@@ -182,10 +180,10 @@
       <td>
         <div class="button-container">
           <a href='/accept_rep/{{report.no_field}}/'>
-            <button class="button" {% if report.admin_responded == 1 %} disabled {% endif %}>Accept</button>
+            <button class="accept_button" {% if report.admin_responded == 1 %} disabled {% endif %}>Accept</button>
           </a>
           <a href='/delete_rep/{{report.no_field}}/'>
-            <button class="button1" {% if report.admin_responded == 1 %} disabled {% endif %}>Reject</button>
+            <button class="reject_button" {% if report.admin_responded == 1 %} disabled {% endif %}>Reject</button>
           </a>
         </div>
       </td>

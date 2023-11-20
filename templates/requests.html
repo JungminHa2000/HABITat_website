@@ -7,10 +7,8 @@
 {% block content %}
 <style>
   table {
-    border-collapse: separate;
-    /* Keep the double lines */
-    border-spacing: 0.5vw;
-    /* No spacing between cells */
+    border-collapse: separate; /* Keep the double lines */
+    border-spacing: 0.5vw; /* No spacing between cells */
     width: 99vw;
     border-radius: 0.5vw;
   }
@@ -18,9 +16,7 @@
   th,
   td {
     padding: 0.5vw;
-    /* Add padding to improve spacing */
     text-align: center;
-    /* Center-align text in cells */
     border-radius: 0.5vw;
     background-color: rgba(220, 225, 217, 0.7);
     color: rgb(133, 85, 86);
@@ -28,7 +24,7 @@
     font-weight: bold;
   }
 
-  .button1 {
+  .accept_button {
     background-color: #04AA6D;
     color: white;
     padding: 14px 20px;
@@ -40,7 +36,7 @@
     border-radius: 0.5vw;
   }
 
-  .button2 {
+  .reject_button {
     background-color: red;
     color: white;
     padding: 14px 20px;
@@ -52,7 +48,7 @@
     border-radius: 0.5vw;
   }
 
-  .button3 {
+  .home_button {
     border: none;
     color: white;
     text-align: center;
@@ -68,26 +64,7 @@
     border-radius: 0.5vw;
   }
 
-  .button4 {
-    border: none;
-    color: #DCE1D9;
-    padding: 15px 45px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 15px;
-    cursor: pointer;
-  }
-
-  .button5 {
-    position: absolute;
-    background-color: #797D62;
-    border: 1px solid black;
-    top: 3%;
-    left: 2%;
-  }
-
-  #sidebar {
+  #header {
     width: 97vw;
     height: 5vh;
     display: flex;
@@ -116,14 +93,11 @@
     /* Ensure buttons take the full height of the cell */
   }
 
-  .button1,
-  .button2 {
-    /* Adjust button styles as needed */
+  .accept_button,
+  .reject_button {
     width: auto;
-    /* Allow buttons to adjust based on content */
   }
 
-  /* Initially hide rows with the class hide-row */
   .hide-row {
     display: none;
   }
@@ -140,8 +114,8 @@
 
 <body>
   <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-  <nav id="sidebar">
-    <a href='/homepage'><button class="button3">Home</button></a>
+  <nav id="header">
+    <a href='/homepage'><button class="home_button">Home</button></a>
   </nav>
 
   <h1 style="color: #DCE1D9;">Requests</h1>
@@ -179,10 +153,10 @@
       <td>
         <div class="button-container">
           <a href='/accept/{{request.no_field}}/'>
-            <button class="button1">Accept</button>
+            <button class="accept_button">Accept</button>
           </a>
           <a href='/delete/{{request.no_field}}/'>
-            <button class="button2">Reject</button>
+            <button class="reject_button">Reject</button>
           </a>
         </div>
       </td>
@@ -201,10 +175,10 @@
       <td>
         <div class="button-container">
           <a href='/accept/{{request.no_field}}/'>
-            <button class="button1" {% if request.admin_responded == 1 %} disabled {% endif %}>Accept</button>
+            <button class="accept_button" {% if request.admin_responded == 1 %} disabled {% endif %}>Accept</button>
           </a>
           <a href='/delete/{{request.no_field}}/'>
-            <button class="button2" {% if request.admin_responded == 1 %} disabled {% endif %}>Reject</button>
+            <button class="reject_button" {% if request.admin_responded == 1 %} disabled {% endif %}>Reject</button>
           </a>
         </div>
       </td>

@@ -32,7 +32,7 @@
         font-weight: bold;
     }
 
-    .button {
+    .home_button {
         border: none;
         color: white;
         text-align: center;
@@ -40,17 +40,15 @@
         display: inline-block;
         font-size: 0.8vw;
         cursor: pointer;
-        width: auto;
-        /* Let the button width adjust based on content */
+        width: auto; /* Let the button width adjust based on content */
         height: 3vh;
         background-color: #797D62;
         border: 1px solid black;
-        padding: 0 10px;
-        /* Add some horizontal padding to buttons */
+        padding: 0 10px; /* Add some horizontal padding to buttons */
         border-radius: 0.5vw;
     }
 
-    #sidebar {
+    #header {
         width: 97vw;
         height: 5vh;
         display: flex;
@@ -83,20 +81,19 @@
         display: none;
     }
 
-    /* Show rows with the class show-row */
     .show-row {
         display: table-row;
     }
 
     .banned {
-        opacity: 0.3;
-        /* Reduces the opacity to make it look grayed out */
+        opacity: 0.3; /* Reduces the opacity to make it look grayed out */
     }
 </style>
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-<nav id="sidebar">
-    <a href='/homepage'><button class="button">Home</button></a>
+<nav id="header">
+    <a href='/homepage'><button class="home_button">Home</button></a>
     <label id="userDropdownLabel" for="userDropdown">Sort by:</label>
+
     <!-- Dropdown for user selection -->
     <select id="userDropdown" onchange="showSelectedUser()">
         <option value="">Select a User ID</option>
@@ -149,6 +146,7 @@
 </table>
 
 <script>
+    // the function used for drop down select
     function showSelectedUser() {
         const dropdown = document.getElementById("userDropdown");
         const selectedUserId = dropdown.value;
@@ -175,6 +173,7 @@
         }
     }
 
+    // function used for the toggling of showing all users and not banned users
     function toggleAllUsers() {
         const showAllUsers = document.getElementById('showAllUsers').checked;
         const allUsers = document.querySelectorAll('.all-users-row');
@@ -201,6 +200,4 @@
         toggleAllUsers();
     };
 </script>
-
-
 {% endblock %}

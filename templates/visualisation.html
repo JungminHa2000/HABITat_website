@@ -31,17 +31,6 @@
         margin-top: 1vh;
     }
 
-    #myBarChart {
-        width: 40vw;
-        height: 100vh;
-    }
-
-    #myTreeChart {
-        width: 100vw;
-        height: 90vh;
-    }
-
-    /* Add this style for the new containers */
     .title-container {
         display: flex;
         justify-content: space-between;
@@ -51,34 +40,24 @@
 
     .title {
         flex-grow: 1;
-        /* Allow the title to take available space */
+        color: rgb(219, 224, 216);
     }
 
     .button-container {
-        margin-left: 10px;
-        /* Adjust the margin for spacing */
+        margin-left: 10px; /* Adjust the margin for spacing */
     }
 
-    /* Add this style to move the button to the right */
     #treeChartTitle {
-        text-align: center;
         color: rgb(219, 224, 216);
     }
 
     #barChartTitle {
-        text-align: center;
         color: rgb(219, 224, 216);
     }
 
     body {
         background-color: #BAA587;
         font-family: 'Roboto';
-    }
-
-    #line {
-        width: 100vw;
-        height: 5px;
-        background-color: #797d62;
     }
 
     #jumpToTop {
@@ -91,11 +70,10 @@
         padding: 10px 15px;
         cursor: pointer;
         z-index: 1000;
-        border-radius: 5px;
-        /* Add rounded corners */
+        border-radius: 5px; /* Add rounded corners */
     }
 
-    #sidebar {
+    #header {
         width: 97vw;
         height: 5vh;
         display: flex;
@@ -120,10 +98,29 @@
         padding: 5px 10px;
         cursor: pointer;
     }
+
+    #content-container {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .box {
+        border: 2px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        text-align: center;
+        width: 13vw;
+        height: 10vh;
+        float: left;
+        margin-right: 2%;
+        border-radius: 0.5vw;
+    }
 </style>
 
 <body>
-    <nav id="sidebar">
+    <nav id="header">
         <a href='/homepage'><button class="button">Home</button></a>
         <div class="sidebar-buttons">
             <a href="#barChartTitle"><button class="button chart-button">Money in Bank</button></a>
@@ -134,9 +131,22 @@
     <button id="jumpToTop" onclick="jumpToTop()">^</button>
 
     <div class="charts-container">
-        <h2 id="barChartTitle">Money in Bank By Goal</h2>
-        <canvas id="myBarChart"></canvas>
-        <div id="line"></div>
+        <div class="title-container">
+            <div class="title">
+                <h2 id="barChartTitle">Money in Bank By Goal</h2>
+            </div>
+        </div>
+
+        <!-- Money chart box -->
+        <div id="content-container">
+            <div class="box" style="width: 96vw; height: 40vh; margin: 0 auto;">
+                <div style="width: 100%; height: 100%;">
+                    <canvas id="myBarChart" style="width: 100%; height: 100%;"></canvas>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
         <div class="title-container">
             <div class="title">
                 <h2 id="treeChartTitle">Report Relationship</h2>
@@ -145,8 +155,18 @@
                 <a href="/reports"><button class="button">Go to Reports</button></a>
             </div>
         </div>
-        <canvas id="myTreeChart"></canvas>
+        <!-- Report Rel chart box -->
+        <div id="content-container">
+            <div class="box" style="width: 96vw; height: 40vh; margin: 0 auto;">
+                <div style="width: 100%; height: 100%;">
+                    <canvas id="myTreeChart" style="width: 100%; height: 100%;"></canvas>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
     </div>
+
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -176,8 +196,8 @@
                     nodes.push({
                         id: reporter.id,
                         label: reporter.username,
-                        x: Math.random() * posScale, 
-                        y: Math.random() * posScale  
+                        x: Math.random() * posScale,
+                        y: Math.random() * posScale
                     });
                 }
                 reporter.children.forEach(function (reportee) {
@@ -189,8 +209,8 @@
                         nodes.push({
                             id: reportee.id,
                             label: reportee.username,
-                            x: Math.random() * posScale, 
-                            y: Math.random() * posScale 
+                            x: Math.random() * posScale,
+                            y: Math.random() * posScale
                         });
                     }
                 });
@@ -266,7 +286,7 @@
             var maxTextHeight = 14;
 
             var maxNodeWidth = nodeSize * 2;
-            var maxNodeHeight = nodeSize * 2; 
+            var maxNodeHeight = nodeSize * 2;
 
             var scaleWidth = (canvasWidth - maxTextWidth) / maxX;
             var scaleHeight = (canvasHeight - maxTextHeight) / maxY;
@@ -278,7 +298,7 @@
                 var dx = node1.x - node2.x;
                 var dy = node1.y - node2.y;
                 var distance = Math.sqrt(dx * dx + dy * dy);
-                return distance < nodeSize * 2; 
+                return distance < nodeSize * 2;
             }
 
             // Function to resolve node collisions
@@ -286,7 +306,7 @@
                 for (var i = 0; i < nodes.length; i++) {
                     for (var j = i + 1; j < nodes.length; j++) {
                         if (nodesOverlap(nodes[i], nodes[j])) {
-                            nodes[j].x += (nodeSize * 2) + 5; 
+                            nodes[j].x += (nodeSize * 2) + 5;
                         }
                     }
                 }
@@ -307,13 +327,13 @@
             nodes.forEach(function (node) {
                 treeCtx.beginPath();
                 treeCtx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI);
-                treeCtx.fillStyle = '#997B66';
+                treeCtx.fillStyle = '#B58463';
                 treeCtx.fill();
                 treeCtx.closePath();
             });
             nodes.forEach(function (node) {
                 // Draw node label with some space above the node
-                treeCtx.font = '1.5vh Roboto';
+                treeCtx.font = '2vh Roboto';
                 treeCtx.fillStyle = '#000000';
                 treeCtx.textAlign = 'center';
                 treeCtx.fillText(node.label, node.x, node.y - nodeSize - 10);

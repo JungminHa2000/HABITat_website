@@ -32,7 +32,7 @@
         font-weight: bold;
     }
 
-    #sidebar {
+    #header {
         width: 97vw;
         height: 5vh;
         display: flex;
@@ -82,10 +82,11 @@
     }
 </style>
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-<nav id="sidebar">
+<nav id="header">
     <a href='/homepage'><button class="button">Home</button></a>
-    <label id="userSelectorLabel" for="userSelector">Sort by:</label>
 
+     <!-- Dropdown for user selection -->
+    <label id="userSelectorLabel" for="userSelector">Sort by:</label>
     <select id="userSelector" onchange="changeUser(this)">
         <option value="">Select User</option>
         {% for user_id in user_ids %}
@@ -93,7 +94,9 @@
         {% endfor %}
     </select>
 </nav>
+
 <script>
+    // changing the users (sends url)
     function changeUser(selectElement) {
         var selectedUserId = selectElement.value;
         if (selectedUserId) {

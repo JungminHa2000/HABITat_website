@@ -11,16 +11,16 @@ from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from collections import Counter
 
-# Returns all the requests
+# Returns the requests
 def all_requests(request):
-    request_list = Requests.objects.filter(admin_responded=0)
-    request_all = Requests.objects.all()
+    request_list = Requests.objects.filter(admin_responded=0) # requests that weren't addressed yet
+    request_all = Requests.objects.all() # all the requests that were created so far
     return render(request, 'requests.html', {'request_list': request_list, 'request_all': request_all})
 
-# Returns all the reports
+# Returns the reports
 def all_reports(request):
-    report_list = Report.objects.filter(admin_responded=0)
-    report_all = Report.objects.all()
+    report_list = Report.objects.filter(admin_responded=0) # reports that weren't addressed yet
+    report_all = Report.objects.all() # all the reports that were created so far
     return render(request, 'reports.html', {'report_list': report_list, 'report_all': report_all})
 
 # Returns the counts of different stats to display a summary in the dashboard screen
@@ -32,17 +32,18 @@ def home_summary(request):
     banned_user_count = UserData.objects.filter(banned=1).count()
 
     report_dates = Report.objects.values_list('date_reported', flat=True)
-    date_counts = Counter(date.strftime('%Y-%m-%d') for date in report_dates)
+    report_date_counts = Counter(date.strftime('%Y-%m-%d') for date in report_dates)
     request_dates = Requests.objects.values_list('date_requested',flat=True)
-    date_counts2 = Counter(date.strftime('%Y-%m-%d') for date in request_dates)
+    request_date_counts = Counter(date.strftime('%Y-%m-%d') for date in request_dates)
+
     # Extract unique dates and their counts
-    unique_dates = list(date_counts.keys())
-    report_counts = list(date_counts.values())
+    unique_report_dates = list(report_date_counts.keys())
+    report_counts = list(report_date_counts.values())
 
-    unique_dates2 = list(date_counts2.keys())
-    request_counts = list(date_counts2.values())
+    unique_request_dates = list(request_date_counts.keys())
+    request_counts = list(request_date_counts.values())
 
-    return render(request, 'webHome.html', {'unique_dates2': unique_dates2, 'request_counts': request_counts, 'unique_dates': unique_dates,
+    return render(request, 'webHome.html', {'unique_dates2': unique_request_dates, 'request_counts': request_counts, 'unique_dates': unique_report_dates,
         'report_counts': report_counts, 'report_count': report_count, 'request_count': request_count, 'user_count': user_count, 'goal_count': goal_count, 'banned_user_count': banned_user_count})
 
 # Returns the reports by reportee username
@@ -62,7 +63,6 @@ def user_info(request, user_id):
             'goal_id': goal.goal_id,
             'goal_desc': goal_info.goal_desc,
             'bank': goal_info.bank,
-            # Add other fields from GoalInfo table as needed
         }
 
         tasks = Tasks.objects.filter(goal=goal.goal_id)
@@ -73,7 +73,6 @@ def user_info(request, user_id):
                 'task_id': task.task_id,
                 'task_desc': task.task_desc,
                 'reward': task.reward,
-                # Add other fields from Tasks table as needed
             }
             task_list.append(task_details)
 
@@ -90,7 +89,7 @@ def user_info(request, user_id):
 # Logic to decline a reward change request
 def decline_request(request, req_id):
     declined_req = Requests.objects.get(no_field=req_id)
-    declined_req.admin_responded = 1
+    declined_req.admin_responded = 1 # set to 1 after request has been reponded to
     declined_req.save()
     return HttpResponseRedirect(reverse('all_requests'))
 
@@ -99,26 +98,26 @@ def accept_request(request, req_id):
     accepted_req = Requests.objects.get(no_field=req_id)
     tid = accepted_req.task_id
     req = Tasks.objects.get(task_id=tid)
-    req.reward = accepted_req.requested_reward
+    req.reward = accepted_req.requested_reward # change the request
     req.save()
-    accepted_req.admin_responded = 1
+    accepted_req.admin_responded = 1 # set to 1 after request has been reponded to
     accepted_req.save()
     return HttpResponseRedirect(reverse('all_requests'))
 
 # Logic to decline a report
 def decline_report(request, rep_id):
     report = Report.objects.get(no_field=rep_id)
-    report.admin_responded = 1
+    report.admin_responded = 1 # set to 1 after request has been reponded to
     report.save()
     return HttpResponseRedirect(reverse('all_reports'))
 
 # Logic to accept a report
 def accept_report(request, rep_id):
     report = Report.objects.get(no_field=rep_id)
-    report.admin_responded = 1
+    report.admin_responded = 1 # set to 1 after request has been reponded to
     report.save()
     user = UserData.objects.get(user_id=report.reportee_id)
-    user.num_reported += 1
+    user.num_reported += 1 # keeping track of how many times the user has been reported
     user.save()
     try:
         with transaction.atomic():
@@ -128,6 +127,9 @@ def accept_report(request, rep_id):
             user_name = delete_user.user_name
             delete_all_reports = Report.objects.filter(reportee_id=delete_user.user_id)
 
+            # Sends email to notify user being banned. And deletes the user presence apart 
+            # but it keeps user id, username and email to prevent user signing up again 
+            # with that credentials
             if num_reported > 3:
                 subject = 'You are banned'
                 msg = 'Dear {}, \n \n You have been warned 3 times. Your account will be removed. \n \n Have a good day, \n HABITat Team'.format(user_name)
@@ -147,6 +149,7 @@ def accept_report(request, rep_id):
 
                 goal_id_list.delete()
 
+            # Email content changes depending on what warning they are on
             if num_reported == 3:
                 subject = 'Final warning'
                 msg = 'Dear {}, \n \n This is your final warning. Next time, you will be banned. Please be mindful of other users and be kind to yourself. \n \n Have a good day, \n HABITat Team'.format(user_name)
@@ -162,6 +165,7 @@ def accept_report(request, rep_id):
     except UserData.DoesNotExist:
         print("User not found.")
 
+    # Sends the email
     send_mail(
         subject,
         msg,
@@ -175,7 +179,6 @@ def accept_report(request, rep_id):
 def delete_user(request, uid):
     try:
         with transaction.atomic():
-            delete_user = UserData.objects.get(user_id=uid)
             delete_reports = Report.objects.filter(reportee_id=uid)
             delete_reports.delete()
 
@@ -189,7 +192,6 @@ def delete_user(request, uid):
                     Q(goal=goal_id) | Q(task_id=goal_id)).delete()
 
             goal_id_list.delete()
-            delete_user.delete()
             delete_reports.delete()
     except UserData.DoesNotExist:
         print("User not found.")
@@ -197,8 +199,8 @@ def delete_user(request, uid):
 
 # Returns all the users
 def show_all_users(request):
-    all_user_list = UserData.objects.all()
-    not_banned = UserData.objects.filter(banned=0)
+    all_user_list = UserData.objects.all() # all the users (even the ones thats been banned)
+    not_banned = UserData.objects.filter(banned=0) # only the users that are not banned
     return render(request, 'users.html', {'all_user_list': all_user_list, 'not_banned': not_banned})
 
 # Logic for logging in
@@ -250,8 +252,8 @@ def visualisation(request):
         tree_data.append(reporter)
 
     context = {
-        'goals_json_script': goals_json_script,
-        'tree_data': json.dumps(tree_data),
+        'goals_json_script': goals_json_script, # the json for the money chart
+        'tree_data': json.dumps(tree_data), # the json for the report relationship chart
     }
 
     return render(request, 'visualisation.html', context)
