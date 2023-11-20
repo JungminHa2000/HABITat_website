@@ -1,39 +1,24 @@
-<!-- templates/registration/login.html -->
+<!-- templates/login.html -->
 {% extends 'base.html' %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
+from django import forms
 <style>
-  body {
-    font-family: 'Roboto';
-  }
-
-  .button {
-        border: none;
-        color: white;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 0.8vw;
-        cursor: pointer;
-        width: auto; /* Let the button width adjust based on content */
-        height: 3vh;
-        background-color: #797D62;
-        border: 1px solid black;
-        padding: 0 10px; /* Add some horizontal padding to buttons */
-        border-radius: 0.5vw;
-    }
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>
 
-<body>
-  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-  <h2 style='text-align: center;'>HABITat Admin Website</h2>
+<img src = 'https://lh3.googleusercontent.com/pw/AIL4fc_jYkphueYY4dlHi4SS1S98EFpe-e9jUOq0wycPiroSZMH-k3aaryF46w4YU2JyCYfrELhqyhR3F1s3jnOSb332cofzGGrpqqZY39YaLE7Chzp7W7I=w2400' alt = 'HABITat Logo' height = '270' width = '400' />
+<h2 style = 'text-align: center;'>HABITat Admin Website</h2>
 
-  <form method="post" style="text-align: center;">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class = "button" type="submit" style='text-align: center;'>Log In</button>
-  </form>
-</body>
+<form method="post" align = 'center'>
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" style = 'text-align: center;'>Log In</button>
+</form>
 {% endblock %}
