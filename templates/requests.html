@@ -163,7 +163,7 @@
     </tr>
     {% endfor %}
     {% for request in request_all %}
-    <tr class="all-requests-row {% if request.admin_responded == 1 %} addressed {% endif %}" >
+    <tr class="all-requests-row {% if request.admin_responded == 1 or request.admin_responded == 2 %} addressed {% endif %}" >
       <td>{{request.no_field}}</td>
       <td>{{request.date_requested}}</td>
       <td>{{request.user_name}}</td>
@@ -175,10 +175,10 @@
       <td>
         <div class="button-container">
           <a href='/accept/{{request.no_field}}/'>
-            <button class="accept_button" {% if request.admin_responded == 1 %} disabled {% endif %}>Accept</button>
+            <button class="accept_button" {% if request.admin_responded == 1 or request.admin_responded == 2 %} disabled {% endif %}>Accept</button>
           </a>
           <a href='/delete/{{request.no_field}}/'>
-            <button class="reject_button" {% if request.admin_responded == 1 %} disabled {% endif %}>Reject</button>
+            <button class="reject_button" {% if request.admin_responded == 1 or request.admin_responded == 2 %} disabled {% endif %}>Reject</button>
           </a>
         </div>
       </td>

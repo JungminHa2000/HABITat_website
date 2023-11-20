@@ -171,7 +171,7 @@
     {% endfor %}
 
     {% for report in report_all %}
-    <tr class="all-reports-row {% if report.admin_responded == 1 %} addressed {% endif %}">
+    <tr class="all-reports-row {% if report.admin_responded == 1 or report.admin_responded == 2 %} addressed {% endif %}">
       <td>{{report.no_field}}</td>
       <td>{{report.date_reported}}</td>
       <td>{{report.reportee_username}}</td>
@@ -180,10 +180,10 @@
       <td>
         <div class="button-container">
           <a href='/accept_rep/{{report.no_field}}/'>
-            <button class="accept_button" {% if report.admin_responded == 1 %} disabled {% endif %}>Accept</button>
+            <button class="accept_button" {% if report.admin_responded == 1 or report.admin_responded == 2 %} disabled {% endif %}>Accept</button>
           </a>
           <a href='/delete_rep/{{report.no_field}}/'>
-            <button class="reject_button" {% if report.admin_responded == 1 %} disabled {% endif %}>Reject</button>
+            <button class="reject_button" {% if report.admin_responded == 1 or report.admin_responded == 2 %} disabled {% endif %}>Reject</button>
           </a>
         </div>
       </td>
