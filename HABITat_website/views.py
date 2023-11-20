@@ -100,7 +100,7 @@ def accept_request(request, req_id):
     req = Tasks.objects.get(task_id=tid)
     req.reward = accepted_req.requested_reward # change the request
     req.save()
-    accepted_req.admin_responded = 1 # set to 1 after request has been reponded to
+    accepted_req.admin_responded = 2 # set to 2 after request has been reponded to (accepted)
     accepted_req.save()
     return HttpResponseRedirect(reverse('all_requests'))
 
@@ -114,7 +114,7 @@ def decline_report(request, rep_id):
 # Logic to accept a report
 def accept_report(request, rep_id):
     report = Report.objects.get(no_field=rep_id)
-    report.admin_responded = 1 # set to 1 after request has been reponded to
+    report.admin_responded = 2 # set to 1 after request has been reponded to
     report.save()
     user = UserData.objects.get(user_id=report.reportee_id)
     user.num_reported += 1 # keeping track of how many times the user has been reported
